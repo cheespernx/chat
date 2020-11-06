@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  
+  <meta charset="utf-8" />
+  <title>Registrar | Chat - Nexus NX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+  <meta content="Themesbrand" name="author" />
+  <!-- App favicon -->
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+  
+  <!-- Bootstrap Css -->
+  <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- Icons Css -->
+  <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+  <!-- App Css-->
+  <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+  
+</head>
+
+<body>
+  <div class="account-pages my-5 pt-sm-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card overflow-hidden">
+            <div class="bg-soft-primary">
+              <div class="row">
+                <div class="col-7">
+                  <div class="text-primary p-4">
+                    <h5 class="text-primary">Bem-Vindo!</h5>
+                    <p>Crie sua conta para utilizar o Chat.</p>
+                  </div>
+                </div>
+                <div class="col-5 align-self-end">
+                  <img src="assets/images/profile-img.png" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+            <div class="card-body pt-0"> 
+              <div>
+                <a href="/">
+                  <div class="avatar-md profile-user-wid mb-4">
+                    <span class="avatar-title rounded-circle bg-light">
+                      <img src="assets/images/logo.svg" alt="" class="rounded-circle" height="34">
+                    </span>
+                  </div>
+                </a>
+              </div>
+              <div class="p-2">
+                <form id="form" class="form-horizontal">
+                  
+                  <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" class="form-control" id="email" placeholder="Insira o seu e-mail.">        
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" class="form-control" id="password" placeholder="Insira a sua senha.">        
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="password-verify">Repita a sua senha</label>
+                    <input type="password" class="form-control" id="password-verify" placeholder="Insira novamente a sua senha.">        
+                  </div>
+                  
+                  <div class="mt-4">
+                    <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Registrar</button>
+                  </div>
+
+                  <div class="mt-4 text-center">
+                    <p class="mb-0">Ao se registrar no Chat Nexus NX você aceita os nossos <a href="#" class="text-primary">Termos de serviço</a></p>
+                  </div>
+                  <div class="mt-4">
+                    <div class="col-md mb-1">
+                      <div class="text-center">
+                        <a href="/login"><i class="mdi mdi-lock mr-1"></i>Fazer Login</a>
+                      </div>
+                    </div>
+                    <div class="col-md">
+                      <div class="text-center">
+                        <a href="/recovery" class="text-muted"><i class="mdi mdi-lock mr-1"></i> Esqueceu sua Senha?</a>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  
+                </form>
+              </div>
+              
+            </div>
+          </div>
+          <div class="mt-5 text-center">
+            <p>© 2020 Prime. Desenvolvido e Mantido por <b>Nexus NX</b>.</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JAVASCRIPT -->
+  <script src="assets/libs/jquery/jquery.min.js"></script>
+  <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+  <script src="assets/libs/simplebar/simplebar.min.js"></script>
+  <script src="assets/libs/node-waves/waves.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  
+  <!-- App js -->
+  <script src="assets/js/app.js"></script>
+  
+  <script type="text/javascript">
+    $('#form').submit(function(e){
+      e.preventDefault();
+
+      const email = $('#email').val();
+      const password = $('#password').val();
+      const passwordVerify = $('#password-verify').val();
+
+      if(password != passwordVerify || password == ''){
+        toastr.warning('As senhas não combinam','Ops...')
+        return false;
+      }
+      if(email == ''){
+        toastr.warning('O campo e-mail precisa ser preenchido','Ops...')
+        return false;
+      }
+
+      
+      
+      $.post( "/register-account", { email: email, password: password })
+      .done(function(data) {
+        console.log(data)
+        if(data == 'auth/email-already-in-use'){
+          toastr.error('Este e-mail já está em uso.','Erro')
+
+        } else if(data == 'auth/credential-already-in-use'){
+          toastr.error('Esta credencial já está em uso.','Erro')
+
+        } else if(data == 'auth/account-exists-with-different-credential'){
+          toastr.error('Esta conta já existe.','Erro')
+
+        } else {
+          toastr.success('Este e-mail já está em uso.','Sucesso.')
+        }
+      })
+    })
+    
+  </script>
+</body>
+</html>
